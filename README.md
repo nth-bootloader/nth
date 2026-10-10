@@ -148,16 +148,26 @@ To boot the ISO in VirtualBox, you must enable EFI.
 
 ### Boot Manager Configuration (`nth.cfg`)
 
-The bootloader features a built-in graphical boot manager. It populates its menu by parsing an `nth.cfg` file located in the root of the EFI partition. You can define up to 9 kernel entries in this file, using the simple `Name=Path` format:
+The bootloader features a built-in graphical boot manager. It populates its menu by parsing an `nth.cfg` file located in the root of the EFI partition. You can define a countdown timeout (in seconds) and up to 9 kernel entries in this file, using the simple `Name=Path` format:
 
 ```ini
+# Timeout before automatically booting the selected entry (default: 10s, -1 to disable)
+timeout=10
+
 NTH OS=\kernel.elf
 Alpine Linux=\vmlinuz-lts|vmlinuz-lts initrd=\initramfs-lts modules=loop,squashfs,sd-mod,usb-storage console=tty0 quiet
 Windows 11=\EFI\BOOT\win_boot.efi
 Memory Tester=\memtest.elf
 ```
 
-If `nth.cfg` is missing or fails to load, the boot manager will default to attempting to load `\kernel.elf`. A "Reboot System" option is always appended to the end of the menu automatically.
+If `nth.cfg` is missing or fails to load, the boot manager will default to a 10-second timer and attempt to load `\kernel.elf`. A "Reboot System" option is always appended to the end of the menu automatically.
+
+#### Automatic Boot Timer Behavior
+- **Countdown**: When the menu loads, the default entry (first entry) is highlighted and the timer counts down automatically.
+- **Auto-Boot Selection**: When the countdown reaches 0, the actively highlighted operating system is booted automatically.
+- **Switching Options**: Navigating with the Up/Down arrow keys resets the countdown timer back to the configured timeout for whichever entry you select.
+- **Reboot Protection**: If you navigate to "Reboot System", the timer is automatically removed/cancelled so the machine will never reboot unattended. Navigating back up to a bootable OS entry restores and resets the countdown timer.
+- **Instant Boot / Cancel**: Pressing `Enter` boots the active option immediately. Pressing `ESC` cancels the countdown timer. Setting `timeout=0` boots immediately, and `timeout=-1` disables the timer.
 
 ### Linux Boot Support
 

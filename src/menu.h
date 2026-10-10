@@ -12,6 +12,6 @@ typedef struct
     CHAR16 *Options;
 } BootEntry;
 
-BootEntry *ShowGraphicalMenu(EFI_SYSTEM_TABLE *SystemTable, Framebuffer *fb, BootEntry *Entries, UINTN EntryCount);
+BootEntry *ShowGraphicalMenu(EFI_SYSTEM_TABLE *SystemTable, Framebuffer *fb, BootEntry *Entries, UINTN EntryCount, INTN Timeout);
 
 #endif

@@ -45,6 +45,7 @@ fi
 cp ../build/BOOTX64.EFI win_esp/EFI/BOOT/BOOTX64.EFI
 
 cat <<EOF > win_esp/nth.cfg
+timeout=5
 Windows Setup=\EFI\BOOT\win_boot.efi
 EOF
 

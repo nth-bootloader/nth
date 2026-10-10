@@ -18,16 +18,25 @@ EFI_STATUS EFIAPI efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable
 
     BootEntry entries[10];
     UINTN entry_count = 0;
+    INTN Timeout = 10;
 
     VOID *ConfigBuffer = NULL;
     UINTN ConfigSize = 0;
 
     if (!EFI_ERROR(LoadFile(ImageHandle, L"\\nth.cfg", &ConfigBuffer, &ConfigSize)))
     {
-        entry_count = ParseConfig(ConfigBuffer, ConfigSize, entries, 9);
+        entry_count = ParseConfig(ConfigBuffer, ConfigSize, entries, 9, &Timeout);
         uefi_call_wrapper(BS->FreePool, 1, ConfigBuffer);
     }
     else
+    {
+        entries[0].Name = L"NTH OS (Default)";
+        entries[0].KernelPath = L"\\kernel.elf";
+        entries[0].Options = NULL;
+        entry_count = 1;
+    }
+
+    if (entry_count == 0)
     {
         entries[0].Name = L"NTH OS (Default)";
         entries[0].KernelPath = L"\\kernel.elf";
@@ -40,7 +49,7 @@ EFI_STATUS EFIAPI efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable
     entries[entry_count].Options = NULL;
     entry_count++;
 
-    BootEntry *SelectedEntry = ShowGraphicalMenu(SystemTable, &fb, entries, entry_count);
+    BootEntry *SelectedEntry = ShowGraphicalMenu(SystemTable, &fb, entries, entry_count, Timeout);
 
     uefi_call_wrapper(SystemTable->ConOut->ClearScreen, 1, SystemTable->ConOut);
     Print(L"Attempting to boot: %s\n", SelectedEntry->Name);

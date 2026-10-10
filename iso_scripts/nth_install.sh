@@ -30,6 +30,7 @@ cp /mnt/root/boot/initramfs-lts /mnt/efi/boot/
 
 echo "Generating nth.cfg..."
 cat <<EOF > /mnt/efi/nth.cfg
+timeout=5
 Alpine Linux=\boot\vmlinuz-lts|vmlinuz-lts initrd=\boot\initramfs-lts root=/dev/sda3 modules=ext4 quiet
 EOF
 

@@ -31,6 +31,7 @@ mkdir -p alpine_esp/boot
 cp ../build/BOOTX64.EFI alpine_esp/EFI/BOOT/BOOTX64.EFI
 
 cat <<EOF > alpine_esp/nth.cfg
+timeout=5
 Alpine Linux=\boot\vmlinuz-lts|vmlinuz-lts initrd=\boot\initramfs-lts modules=loop,squashfs,sd-mod,usb-storage quiet
 EOF
 
