@@ -9,6 +9,8 @@
 ### Screenshots
 ![nth Boot Menu](assets/homepage.png?raw=true "nth Boot Menu")
 
+Youtube glimpse: https://youtu.be/tYu0wbASopk?si=zbVdHcGOD5yAJzoI
+
 ## Table of Contents
 - [Setup](#setup)
   - [Prerequisites (Linux / WSL)](#prerequisites-linux--wsl)
